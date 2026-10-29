@@ -2,7 +2,7 @@
 
 The public page for the carafe Fleet operator, a Kubernetes operator that runs
 [Fleet](https://fleetdm.com) and, through it, keeps always-on Mac stations for AI agents (Claude Code, Codex or your own) healthy. It is one
-HTML file that is also a 14-slide deck.
+HTML file that is also a 15-slide deck.
 
 - **Live:** https://damaris-x.github.io/carafe-fleet-operator/
 - **As a deck:** press **P** or **Present**; ← → to move, Esc to leave. Opening

@@ -309,6 +309,28 @@ td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .steps, .lanes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* ---------- the five-layer cake ---------- */
+.cake { display: grid; gap: 6px; min-width: 0; }
+.layer {
+  --i: 0;
+  width: calc(100% - var(--i) * 6%); margin-inline: auto;
+  display: grid; grid-template-columns: 2.2rem minmax(0, 9rem) minmax(0, 1fr); align-items: center; gap: 12px;
+  padding: 12px 16px; border-radius: 6px;
+  background: var(--zone); border: 1px solid var(--line);
+}
+.layer .no { font: 600 0.78rem/1 var(--mono); color: var(--muted); }
+.layer .nm { font: 700 1.15rem/1.1 var(--display); }
+.layer .ours { font-size: var(--t-small); color: var(--muted); min-width: 0; }
+.layer.here { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.layer.here .no, .layer.here .ours { color: var(--paper); opacity: 0.9; }
+.layer.here .nm::after { content: "we build this"; display: block; font: 600 0.66rem/1.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; margin-top: 3px; }
+@media (max-width: 640px) {
+  .layer { width: 100%; grid-template-columns: 1.8rem minmax(0, 1fr); }
+  .layer .ours { grid-column: 2; }
+}
+.layerchip { font: 600 0.7rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 5px 9px; text-decoration: none; white-space: nowrap; }
+@media (max-width: 900px) { .layerchip { display: none; } }
+
 footer.site {
   padding-block: 28px 40px;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
@@ -324,7 +346,9 @@ footer.site .frame { gap: 8px; }
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2.5h6M10 2.5v4.2c0 .6-.3 1.1-.7 1.5C6.9 10.3 5 13 5 16a7 7 0 0 0 14 0c0-3-1.9-5.7-4.3-7.8-.4-.4-.7-.9-.7-1.5V2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M6.4 14.5h11.2a5.6 5.6 0 0 1-11.2 1.5z" fill="var(--accent)"/></svg>
     carafe <span>Fleet Operator</span>
   </a>
+  <a class="layerchip" href="#stack" title="Where carafe sits in the AI stack">Layer 3 of 5 · Infrastructure</a>
   <nav aria-label="Sections">
+    <a href="#stack">AI stack</a>
     <a href="#shape">How it works</a>
     <a href="#agents">Any agent</a>
     <a href="#remedy">Self-healing</a>
@@ -365,7 +389,26 @@ footer.site .frame { gap: 8px; }
   </div>
 </section>
 
-<!-- 2 · problem -->
+<!-- 2 · the five-layer cake -->
+<section class="slide" id="stack" aria-label="Where carafe sits in the AI stack">
+  <div class="frame split even">
+    <div class="stack">
+      <div class="eyebrow">Where it sits</div>
+      <h2>Five layers of AI. carafe is layer 3, the infrastructure.</h2>
+      <p class="lede">Jensen Huang describes AI as a five-layer stack: energy, chips, infrastructure, models and applications. Infrastructure includes power delivery, networking and the systems that run many processors as one machine. carafe is building that layer for AI agents: a Mac mini cloud that keeps each agent's machine powered, connected and running.</p>
+      <p class="src">Framework from Jensen Huang, <a href="https://blogs.nvidia.com/blog/ai-5-layer-cake/" target="_blank" rel="noopener">"AI Is a 5-Layer Cake"</a>, NVIDIA blog, 2026-03-10. Placing carafe on it is our reading; carafe is not affiliated with or endorsed by NVIDIA.</p>
+    </div>
+    <div class="cake" role="list" aria-label="The five layers, top to bottom">
+      <div class="layer" role="listitem" style="--i:4"><span class="no">5</span><span class="nm">Applications</span><span class="ours">where value is created: assistants and agents people use every day</span></div>
+      <div class="layer" role="listitem" style="--i:3"><span class="no">4</span><span class="nm">Models</span><span class="ours">Claude, GPT and open models, reached over the network</span></div>
+      <div class="layer here" role="listitem" style="--i:2"><span class="no">3</span><span class="nm">Infrastructure</span><span class="ours">carafe: power delivery, networking, remote hands and orchestration for always-on agent machines</span></div>
+      <div class="layer" role="listitem" style="--i:1"><span class="no">2</span><span class="nm">Chips</span><span class="ours">the processors that turn power into computation</span></div>
+      <div class="layer" role="listitem" style="--i:0"><span class="no">1</span><span class="nm">Energy</span><span class="ours">the power every token starts from</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · problem -->
 <section class="slide alt" id="problem" aria-label="The problem">
   <div class="frame">
     <div class="stack">
@@ -720,7 +763,7 @@ footer.site .frame { gap: 8px; }
         <a class="btn hide-deck" href="mailto:ccheng@ccheng.us?subject=carafe%20Fleet%20operator">Write to us</a>
       </div>
       <p class="small muted">Write for a commercial license or a scoped pilot on your own Mac stations.</p>
-      <p class="fine">Independent software. Not affiliated with or endorsed by Fleet Device Management, Anthropic, OpenAI or Apple.</p>
+      <p class="fine">Independent software. Not affiliated with or endorsed by Fleet Device Management, Anthropic, OpenAI, NVIDIA or Apple.</p>
     </div>
     <div class="licence-grid">
       <div class="lic">
@@ -753,7 +796,7 @@ footer.site .frame { gap: 8px; }
 
 <div class="deckbar" role="toolbar" aria-label="Slide controls">
   <button type="button" id="prev-btn" aria-label="Previous slide">←</button>
-  <span class="count" id="count" aria-live="polite">1 / 14</span>
+  <span class="count" id="count" aria-live="polite">1 / 15</span>
   <button type="button" id="next-btn" aria-label="Next slide">→</button>
   <button type="button" id="exit-btn">Exit</button>
 </div>
