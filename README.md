@@ -12,7 +12,7 @@ This repository holds the page and its figures only, no carafe source. Everythin
 public. The internal pitch notes, with the sources for every claim on the page, are in the
 carafe repository under `docs/marketing/`.
 
-No build step: edit `index.html` or a figure in `figures/`, push to `main`, and GitHub Pages
-publishes it.
+No build step: edit `index.html` or a figure in `figures/` and open a pull request (the organization
+requires one for `main`). Merging it republishes the page within a minute or two.
 
 © 2026 Cheng Cheng. All rights reserved.
