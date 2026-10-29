@@ -223,6 +223,10 @@ td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 @media (max-width: 900px) { .steps { grid-template-columns: minmax(0, 1fr); } }
 .step { border-top: 2px solid var(--fg); padding-top: 14px; display: grid; gap: 8px; align-content: start; }
 .step:last-child { border-top-color: var(--accent); }
+.steps.vertical, .presenting .steps.vertical { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.steps.vertical .step { padding-top: 10px; gap: 4px; }
+.steps.vertical .step h3 { font-size: 1.2rem; }
+#office .kind { padding-block: 11px; }
 .step .n { font: 600 0.75rem/1 var(--mono); color: var(--muted); letter-spacing: 0.08em; }
 .step h3 { font-size: 1.45rem; }
 .step p { font-size: var(--t-small); color: var(--muted); }
@@ -354,6 +358,7 @@ footer.site .frame { gap: 8px; }
     <a href="#remedy">Self-healing</a>
     <a href="#security">Security</a>
     <a href="#proof">Proof</a>
+    <a href="#office">Small office</a>
     <a href="#license">Licensing</a>
   </nav>
   <button class="btn" type="button" id="present-btn" aria-label="Present as slides">
@@ -744,26 +749,63 @@ footer.site .frame { gap: 8px; }
           <li>Zero-touch enrollment through Apple Business Manager</li>
           <li>Several fleets per install with Fleet Premium</li>
           <li>OS updates, lock and wipe through MDM</li>
+          <li>A company-owned carafe box for small offices, with an engineer for setup and workflows</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 13 · licensing -->
-<section class="slide alt" id="license" aria-label="Licensing and contact">
+<!-- 13 · a small office -->
+<section class="slide alt" id="office" aria-label="Where it goes: a small office">
+  <div class="frame">
+    <div class="stack">
+      <div class="eyebrow">Where it goes <b>/</b> a small office <span class="pill next">direction, not built yet</span></div>
+      <h2>Next: an agent-ready office for a ten-person company.</h2>
+      <p class="lede">A small company has no IT team and no Kubernetes. The plan: it buys a carafe box that becomes its control plane, with no data centre to rent and nothing hosted by us. An engineer sets it up, then works on the team's workflows.</p>
+    </div>
+    <div class="frame split even" style="gap:32px; align-items:start">
+      <div class="kinds">
+        <div class="kind"><div><code>carafe box</code><small>the control plane</small></div><p>A Raspberry Pi 5 running k3s and the operator. The company owns it and decides who is admin; support would get in only with its approval, each visit logged.</p></div>
+        <div class="kind"><div><code>carafe</code><small>one per person</small></div><p>Claude Code, a work folder and the company's skills, on a host in the office, reached from the phone.</p></div>
+        <div class="kind"><div><code>Mac station</code><small>one or two</small></div><p>Mac minis for work that needs a real desktop and Chrome, checked and fixed by the operator through Fleet.</p></div>
+        <div class="kind"><div><code>network</code><small>the office's own</small></div><p>Claude Code's Remote Control <a href="https://code.claude.com/docs/en/remote-control#connection-and-security" target="_blank" rel="noopener">opens no inbound ports</a>, so phones need no public address; Fleet stays on the office LAN. A recommended UniFi kit would add a VLAN for the agents, PoE and a 5G backup line.</p></div>
+      </div>
+      <div class="steps vertical">
+        <div class="step">
+          <span class="n">SETUP</span>
+          <h3>The box goes in.</h3>
+          <p>An engineer, ours or a partner's, installs the box, sets up the network and sign-in, and gives everyone a carafe.</p>
+        </div>
+        <div class="step">
+          <span class="n">THE ENGAGEMENT</span>
+          <h3>Work, not plumbing.</h3>
+          <p>The setup is the same in every office, so the engineer's time goes to one or two workflows for each team.</p>
+        </div>
+        <div class="step">
+          <span class="n">AFTER</span>
+          <h3>Skills travel.</h3>
+          <p>Those workflows become skills that the next company of the same kind can start with. A subscription per person would cover monitoring, upgrades and skill updates.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · licensing -->
+<section class="slide" id="license" aria-label="Licensing and contact">
   <div class="frame split even">
     <div class="stack">
       <div class="eyebrow">Licensing</div>
       <h2>Source available. Free for noncommercial use. Licensed for companies.</h2>
-      <p class="lede">For IT teams that already run Kubernetes, for service providers who look after Macs for several small companies, and for consultancies placing AI Mac stations with their clients.</p>
+      <p class="lede">For IT teams that already run Kubernetes, for service providers who look after Macs for several small companies, for consultancies placing AI Mac stations with their clients, and, next, for small companies and the engineers who set them up.</p>
       <div class="contact">
         <span class="addr" id="addr">ccheng@ccheng.us</span>
         <button class="btn ghost" type="button" id="copy-btn">Copy address</button>
         <a class="btn hide-deck" href="mailto:ccheng@ccheng.us?subject=carafe%20Fleet%20operator">Write to us</a>
       </div>
       <p class="small muted">Write for a commercial license or a scoped pilot on your own Mac stations.</p>
-      <p class="fine">Independent software. Not affiliated with or endorsed by Fleet Device Management, Anthropic, OpenAI, NVIDIA or Apple.</p>
+      <p class="fine">Independent software. Not affiliated with or endorsed by Fleet Device Management, Anthropic, OpenAI, NVIDIA, Apple, Raspberry Pi or Ubiquiti.</p>
     </div>
     <div class="licence-grid">
       <div class="lic">
@@ -790,7 +832,7 @@ footer.site .frame { gap: 8px; }
 
 <footer class="site">
   <div class="frame">
-    <p class="fine">© 2026 Cheng Cheng. carafe is independent software. Fleet is a product of Fleet Device Management Inc., not to be confused with Rancher Fleet. Claude and Claude Code are products of Anthropic; Codex is a product of OpenAI. Apple, Mac and macOS are trademarks of Apple Inc. carafe is not affiliated with or endorsed by any of them.</p>
+    <p class="fine">© 2026 Cheng Cheng. carafe is independent software. Fleet is a product of Fleet Device Management Inc., not to be confused with Rancher Fleet. Claude and Claude Code are products of Anthropic; Codex is a product of OpenAI. Apple, Mac and macOS are trademarks of Apple Inc. Raspberry Pi is a trademark of Raspberry Pi Ltd; UniFi is a trademark of Ubiquiti Inc. carafe is not affiliated with or endorsed by any of them.</p>
   </div>
 </footer>
 
