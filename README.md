@@ -1,18 +1,7 @@
-# carafe Fleet Operator: the page
+# carafe Fleet Operator: moved
 
-The public page for the carafe Fleet operator, a Kubernetes operator that runs
-[Fleet](https://fleetdm.com) and, through it, keeps always-on Mac stations for AI agents (Claude Code, Codex or your own) healthy. It is one
-HTML file that is also a 16-slide deck.
-
-- **Live:** https://damaris-x.github.io/carafe-fleet-operator/
-- **As a deck:** press **P** or **Present**; ← → to move, Esc to leave. Opening
-  `…/#present` starts in the deck. ⌘P prints one slide per page (16:9).
-
-This repository holds the page and its figures only, no carafe source. Everything here is
-public. The internal pitch notes, with the sources for every claim on the page, are in the
-carafe repository under `docs/marketing/`.
-
-No build step: edit `index.html` or a figure in `figures/` and open a pull request (the organization
-requires one for `main`). Merging it republishes the page within a minute or two.
+The page now lives at **https://damaris-x.github.io/fleet-operator/**, part of the Damaris X site, whose source is
+[damaris-x/damaris-x.github.io](https://github.com/damaris-x/damaris-x.github.io). This repository only serves a
+forwarding page at the old address, https://damaris-x.github.io/carafe-fleet-operator/, keeping the slide anchor.
 
 © 2026 Cheng Cheng. All rights reserved.
