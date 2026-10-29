@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>carafe Fleet Operator</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="A Kubernetes operator that runs Fleet and, through it, watches every Mac station and runs the fix when a check fails.">
+<meta name="description" content="A Kubernetes operator that runs Fleet and, through it, keeps always-on Mac stations for AI agents (Claude Code, Codex or your own) running, and runs the fix when a check fails.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
@@ -326,6 +326,7 @@ footer.site .frame { gap: 8px; }
   </a>
   <nav aria-label="Sections">
     <a href="#shape">How it works</a>
+    <a href="#agents">Any agent</a>
     <a href="#remedy">Self-healing</a>
     <a href="#security">Security</a>
     <a href="#proof">Proof</a>
@@ -343,9 +344,9 @@ footer.site .frame { gap: 8px; }
 <section class="slide hero" id="top" aria-label="carafe Fleet Operator">
   <div class="frame split even">
     <div class="stack">
-      <div class="eyebrow">carafe <b>/</b> Fleet operator for Kubernetes</div>
+      <div class="eyebrow">carafe <b>/</b> always-on Macs for AI agents</div>
       <h1>Declare your Macs. <em>Kubernetes keeps them.</em></h1>
-      <p class="lede">The carafe Fleet operator runs <a href="https://fleetdm.com" target="_blank" rel="noopener">Fleet</a>, the open-source device manager from FleetDM, inside your cluster. Through Fleet it checks that every Mac station is awake, logged in and running its AI agent, and runs the configured fix when a check fails.</p>
+      <p class="lede">The carafe Fleet operator runs <a href="https://fleetdm.com" target="_blank" rel="noopener">Fleet</a>, the open-source device manager from FleetDM, inside your cluster. Through Fleet it checks that every Mac station is awake, logged in and running its AI agent (Claude Code, Codex or your own), and runs the configured fix when a check fails.</p>
       <div class="cta hide-deck">
         <a class="btn" href="#shape">See how it works</a>
         <a class="btn ghost" href="#license">Licensing</a>
@@ -375,7 +376,7 @@ footer.site .frame { gap: 8px; }
       <div class="step">
         <span class="n">LID CLOSES</span>
         <h3>The agent stops.</h3>
-        <p>Claude Code runs on the person's own laptop. Phone access helps, but only while that laptop is awake. Not everyone can keep a computer on, or set one up.</p>
+        <p>Claude Code, Codex and other agents run on someone's laptop. Remote access helps, but only while that laptop is awake. Not everyone can keep a computer on, or set one up.</p>
       </div>
       <div class="step">
         <span class="n">REAL WORK IS IN A BROWSER</span>
@@ -385,7 +386,7 @@ footer.site .frame { gap: 8px; }
       <div class="step">
         <span class="n">NOW THERE ARE N MACS</span>
         <h3>Someone has to keep them alive.</h3>
-        <p>Every station must stay awake, logged in, with the agent's page and Chrome running, and be fixed from afar when it is not. Doing that by hand in a device console adds one more place for settings to drift.</p>
+        <p>Every station must stay awake, logged in, with the agent and its browser running, and be fixed from afar when it is not. Doing that by hand in a device console adds one more place for settings to drift.</p>
       </div>
     </div>
   </div>
@@ -395,7 +396,7 @@ footer.site .frame { gap: 8px; }
 <section class="slide" id="carafe" aria-label="Where it fits: carafe">
   <div class="frame split wide-left">
     <div class="stack">
-      <div class="eyebrow">Where it fits <b>/</b> carafe</div>
+      <div class="eyebrow">First use <b>/</b> carafe, for Claude Code</div>
       <h2>One always-on Claude workspace per colleague, reachable from the phone.</h2>
       <p class="lede">A <b>carafe</b> is one person's own container with Claude Code, their work folder and the company's skills. A <b>Mac station</b> runs the same setup natively on a Mac mini, with a real Chrome. Each has one web page, the <b>cellar door</b>, where the person signs in and turns on phone access. Then they work from the Claude app.</p>
       <ul class="points">
@@ -471,8 +472,52 @@ footer.site .frame { gap: 8px; }
   </div>
 </section>
 
-<!-- 6 · one writer -->
-<section class="slide alt" id="one-writer" aria-label="One writer">
+<!-- 6 · any agent -->
+<section class="slide alt" id="agents" aria-label="Any agent on macOS">
+  <div class="frame split even">
+    <div class="stack">
+      <div class="eyebrow">Any agent</div>
+      <h2>Claude Code, Codex or your own agent.</h2>
+      <p class="lede">If it runs on macOS, the operator can watch it. A check is an osquery query, a fix is a shell script run as root, and both live in your spec. Anything osquery can see counts: a process, a launchd job, a port, a heartbeat file.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>agent on the station</th><th>what to check</th><th>status</th></tr></thead>
+          <tbody>
+            <tr><td>Claude Code, in a carafe Mac station</td><td>agent page answers, Chrome running, Claude signed in</td><td><span class="pill ok">lab-tested</span></td></tr>
+            <tr><td>OpenAI Codex CLI</td><td>process running, its LaunchAgent loaded</td><td><span class="pill next">same pattern</span></td></tr>
+            <tr><td>your own agent or bot</td><td>a process, a port, a heartbeat file</td><td><span class="pill next">same pattern</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">Lab-tested: carafe's checks and its agent page's recovery. Codex and custom agents are examples, not yet tested; their checks show in <code>status.checks</code>.</p>
+    </div>
+    <div class="code" role="region" aria-label="Example: keeping a Codex agent running">
+      <div class="code-label"><span>codex-station.yaml, excerpt</span><span>carafe.damaris.club/v1alpha1</span></div>
+<pre><span class="k">kind</span>: FleetConfig
+<span class="k">spec</span>:
+  <span class="k">serverRef</span>: fleet
+  <span class="k">scripts</span>:
+  - <span class="k">name</span>: restart-codex.sh
+    <span class="k">content</span>: |
+      <span class="s">#!/bin/sh
+      # your own LaunchAgent that runs Codex
+      l=com.example.codex
+      u=$(stat -f %Su /dev/console); uid=$(id -u "$u")
+      launchctl kickstart -k "gui/$uid/$l" ||
+        launchctl bootstrap "gui/$uid" \
+          "/Users/$u/Library/LaunchAgents/$l.plist"</span>
+  <span class="k">policies</span>:
+  - <span class="k">name</span>: "station: Codex is running"
+    <span class="k">key</span>: codex
+    <span class="k">platform</span>: darwin
+    <span class="k">query</span>: <span class="s">SELECT 1 FROM processes WHERE name = 'codex';</span>
+    <span class="k">remedy</span>: restart-codex.sh   <span class="c"># run when it fails</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · one writer -->
+<section class="slide" id="one-writer" aria-label="One writer">
   <div class="frame split">
     <div class="stack">
       <div class="eyebrow">Configuration drift</div>
@@ -496,7 +541,7 @@ footer.site .frame { gap: 8px; }
 </section>
 
 <!-- 7 · self-healing -->
-<section class="slide" id="remedy" aria-label="Self-healing">
+<section class="slide alt" id="remedy" aria-label="Self-healing">
   <div class="frame split">
     <div class="stack">
       <div class="eyebrow">Self-healing</div>
@@ -523,7 +568,7 @@ footer.site .frame { gap: 8px; }
 </section>
 
 <!-- 8 · Fleet Free -->
-<section class="slide alt" id="free" aria-label="Runs on Fleet Free">
+<section class="slide" id="free" aria-label="Runs on Fleet Free">
   <div class="frame split even">
     <div class="stack">
       <div class="eyebrow">Fleet Free</div>
@@ -548,7 +593,7 @@ footer.site .frame { gap: 8px; }
 </section>
 
 <!-- 9 · security -->
-<section class="slide" id="security" aria-label="Security">
+<section class="slide alt" id="security" aria-label="Security">
   <div class="frame split">
     <div class="stack">
       <div class="eyebrow">Security</div>
@@ -568,7 +613,7 @@ footer.site .frame { gap: 8px; }
 </section>
 
 <!-- 10 · tenants -->
-<section class="slide alt" id="tenants" aria-label="One Fleet per company">
+<section class="slide" id="tenants" aria-label="One Fleet per company">
   <div class="frame split wide-left">
     <div class="tablewrap">
       <table>
@@ -599,7 +644,7 @@ footer.site .frame { gap: 8px; }
 </section>
 
 <!-- 11 · proof -->
-<section class="slide" id="proof" aria-label="Proof">
+<section class="slide alt" id="proof" aria-label="Proof">
   <div class="frame">
     <div class="stack">
       <div class="eyebrow">Proof <b>/</b> six checks, two implementations</div>
@@ -624,7 +669,7 @@ footer.site .frame { gap: 8px; }
 </section>
 
 <!-- 12 · roadmap -->
-<section class="slide alt" id="roadmap" aria-label="Status and roadmap">
+<section class="slide" id="roadmap" aria-label="Status and roadmap">
   <div class="frame">
     <div class="stack">
       <div class="eyebrow">Status</div>
@@ -663,7 +708,7 @@ footer.site .frame { gap: 8px; }
 </section>
 
 <!-- 13 · licensing -->
-<section class="slide" id="license" aria-label="Licensing and contact">
+<section class="slide alt" id="license" aria-label="Licensing and contact">
   <div class="frame split even">
     <div class="stack">
       <div class="eyebrow">Licensing</div>
@@ -675,7 +720,7 @@ footer.site .frame { gap: 8px; }
         <a class="btn hide-deck" href="mailto:ccheng@ccheng.us?subject=carafe%20Fleet%20operator">Write to us</a>
       </div>
       <p class="small muted">Write for a commercial license or a scoped pilot on your own Mac stations.</p>
-      <p class="fine">Independent software. Not affiliated with or endorsed by Fleet Device Management, Anthropic or Apple.</p>
+      <p class="fine">Independent software. Not affiliated with or endorsed by Fleet Device Management, Anthropic, OpenAI or Apple.</p>
     </div>
     <div class="licence-grid">
       <div class="lic">
@@ -692,7 +737,7 @@ footer.site .frame { gap: 8px; }
       </div>
       <div class="lic">
         <h3>Third parties</h3>
-        <p>Fleet, Claude Code and macOS keep their own terms. carafe's license covers carafe's own code only.</p>
+        <p>Fleet, Claude Code, Codex and macOS keep their own terms. carafe's license covers carafe's own code only.</p>
       </div>
     </div>
   </div>
@@ -702,13 +747,13 @@ footer.site .frame { gap: 8px; }
 
 <footer class="site">
   <div class="frame">
-    <p class="fine">© 2026 Cheng Cheng. carafe is independent software. Fleet is a product of Fleet Device Management Inc., not to be confused with Rancher Fleet. Claude and Claude Code are products of Anthropic. Apple, Mac and macOS are trademarks of Apple Inc. carafe is not affiliated with or endorsed by any of them.</p>
+    <p class="fine">© 2026 Cheng Cheng. carafe is independent software. Fleet is a product of Fleet Device Management Inc., not to be confused with Rancher Fleet. Claude and Claude Code are products of Anthropic; Codex is a product of OpenAI. Apple, Mac and macOS are trademarks of Apple Inc. carafe is not affiliated with or endorsed by any of them.</p>
   </div>
 </footer>
 
 <div class="deckbar" role="toolbar" aria-label="Slide controls">
   <button type="button" id="prev-btn" aria-label="Previous slide">←</button>
-  <span class="count" id="count" aria-live="polite">1 / 13</span>
+  <span class="count" id="count" aria-live="polite">1 / 14</span>
   <button type="button" id="next-btn" aria-label="Next slide">→</button>
   <button type="button" id="exit-btn">Exit</button>
 </div>
